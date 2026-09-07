@@ -90,6 +90,7 @@ export default function BookScreen() {
           sound: true,
         },
         trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
           seconds: 2,
         },
       });
