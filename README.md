@@ -7,7 +7,7 @@ Social: Instagram + Facebook @mspacemind.
 Live space: MSpace Mlang, 2nd Floor Aqua Verde Commercial Building, Mlang, North Cotabato. Hours 9:00-18:00.
 
 ## Run
-Expo Go must be SDK 51. After pulling changes, install dependencies, then run npx expo start -c. Run npx tsc --noEmit for types.
+Expo Go must be SDK 57. After pulling changes, reinstall dependencies and run npx expo start -c. Run npx tsc --noEmit for types.
 
 ## Tabs
 Book Alerts Food Member Review — see src/screens.
