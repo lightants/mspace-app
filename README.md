@@ -25,3 +25,15 @@ Use EAS for Android APK when ready. See src/constants/config.ts.
 
 ## GCash
 Official poster lives in assets/gcash-qr.png (same as the website).
+
+## Dependency reinstall
+Clone this repository into a flat folder such as `/workspace/mspace-app`, not a nested `mspace-app/mspace-app` path.
+After pulling changes, run:
+
+```sh
+rm -rf node_modules package-lock.json
+# reinstall dependencies with the package manager
+npx expo start -c
+```
+
+Keep Expo SDK 57. Do not run audit auto-fixes blindly; they can create a nested second React Native copy and break Metro resolution.
