@@ -10,6 +10,15 @@ import { PrimaryButton, SecondaryButton } from './components/ui';
 
 WebBrowser.maybeCompleteAuthSession();
 const SESSION_KEY = '@mspace/gmailSession';
+const signOutListeners = new Set<() => void>();
+
+export async function signOut() {
+  try {
+    await AsyncStorage.removeItem(SESSION_KEY);
+  } finally {
+    signOutListeners.forEach((listener) => listener());
+  }
+}
 type GmailSession = { accessToken: string; email?: string };
 type AuthExtra = { googleWebClientId?: string; googleAndroidClientId?: string; googleIosClientId?: string };
 function getAuthExtra(): AuthExtra { return (Constants.expoConfig?.extra ?? {}) as AuthExtra; }
@@ -28,12 +37,14 @@ export default function AuthGate({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
+    const onSignOut = () => { setSession(null); setBusy(false); setError(null); };
+    signOutListeners.add(onSignOut);
     let mounted = true;
     AsyncStorage.getItem(SESSION_KEY).then((raw) => {
       if (!mounted) return;
       if (raw) { try { setSession(JSON.parse(raw) as GmailSession); } catch { AsyncStorage.removeItem(SESSION_KEY); } }
     }).catch(() => undefined).finally(() => { if (mounted) setLoading(false); });
-    return () => { mounted = false; };
+    return () => { mounted = false; signOutListeners.delete(onSignOut); };
   }, []);
 
   useEffect(() => {

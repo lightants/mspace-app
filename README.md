@@ -37,3 +37,9 @@ npx expo start -c
 ```
 
 Keep Expo SDK 57. Do not run audit auto-fixes blindly; they can create a nested second React Native copy and break Metro resolution.
+
+## Google sign-in setup
+
+The app gates access with Google OAuth. In Google Cloud Console, create OAuth client IDs for the Web, Android (using package `com.lightants.mspace` and your signing certificate SHA-1), and iOS (using the app bundle identifier). Copy each client ID into the matching empty value under `expo.extra` in `app.json`: `googleWebClientId`, `googleAndroidClientId`, and `googleIosClientId`. Rebuild or restart Expo after changing the values.
+
+Only OAuth client IDs belong in `app.json`; do not add API keys or client secrets.

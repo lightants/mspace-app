@@ -5,6 +5,11 @@
     "scheme": "mspace",
     "version": "1.0.0",
     "orientation": "portrait",
+    "extra": {
+      "googleWebClientId": "",
+      "googleAndroidClientId": "",
+      "googleIosClientId": ""
+    },
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
