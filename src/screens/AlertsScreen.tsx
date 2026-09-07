@@ -106,7 +106,6 @@ export default function AlertsScreen() {
         sound: true,
       },
       trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: 1,
       },
     });
