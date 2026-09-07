@@ -7,6 +7,7 @@ import { Badge, Card, Chip, Divider, Field, Label, Muted, PrimaryButton, Screen,
 import { BOOKING, LOCATION, PRICING } from '../constants/config';
 import { colors, spacing } from '../constants/theme';
 import type { Booking } from '../types';
+import { withNotificationTimeout } from '../utils/notifications';
 import { getBookings, isMembershipActive, makeBookingRef, saveBooking } from '../utils/storage';
 
 type Step = 'form' | 'pay' | 'done';
@@ -19,7 +20,7 @@ export default function BookScreen() {
   const rate = member ? PRICING.memberPerHour : PRICING.walkInPerHour; const total = rate * hours;
   const startHours = Array.from({ length: BOOKING.startHourMax - BOOKING.startHourMin + 1 }, (_, i) => BOOKING.startHourMin + i);
   const hourOptions = Array.from({ length: BOOKING.maxHours - BOOKING.minHours + 1 }, (_, i) => BOOKING.minHours + i);
-  async function scheduleConfirmNotification(ref: string) { try { const { status } = await Notifications.getPermissionsAsync(); if (status !== 'granted') { const req = await Notifications.requestPermissionsAsync(); if (req.status !== 'granted') return; } await Notifications.scheduleNotificationAsync({ content: { title: 'MSpace booking confirmed', body: `Ref ${ref} · See you at MSpace Mlang`, sound: true }, trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 2 } }); } catch { /* booking remains saved if notifications are unavailable */ } }
+  async function scheduleConfirmNotification(ref: string) { try { const { status } = await withNotificationTimeout(Notifications.getPermissionsAsync()); if (status !== 'granted') { const req = await withNotificationTimeout(Notifications.requestPermissionsAsync()); if (req.status !== 'granted') return; } await withNotificationTimeout(Notifications.scheduleNotificationAsync({ content: { title: 'MSpace booking confirmed', body: `Ref ${ref} · See you at MSpace Mlang`, sound: true }, trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 2 } })); } catch { /* booking remains saved if notifications are unavailable */ } }
   function onContinueToPay() {
     if (!date.trim() || !name.trim() || !phone.trim()) { Alert.alert('Missing info', 'Please fill date, name, and phone.'); return; }
     if (startHour + hours > LOCATION.closeHour) { Alert.alert('Hours', `Booking would end after ${LOCATION.closeHour}:00. Choose fewer hours or an earlier start.`); return; }

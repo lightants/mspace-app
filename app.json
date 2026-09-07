@@ -2,6 +2,7 @@
   "expo": {
     "name": "MSpace",
     "slug": "mspace-app",
+    "scheme": "mspace",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +21,8 @@
     },
     "plugins": [
       "expo-notifications",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-web-browser"
     ]
   }
 }
